@@ -26,9 +26,9 @@ public class LZ77 {
                     LZ77Tag tag = data.elementAt(i);
                     String nextSymbol = String.valueOf(tag.getNextSymbol());
                     if (nextSymbol.equals("\n")) {
-                        writer.write("<" + tag.getPosition() + "/" + tag.getLength() + "/" + "\\n" + ">  ");
+                        writer.write("<" + tag.getPosition() + "," + tag.getLength() + "," + "\\n" + ">  ");
                     } else {
-                        writer.write("<" + tag.getPosition() + "/" + tag.getLength() + "/" + nextSymbol + ">  ");
+                        writer.write("<" + tag.getPosition() + "," + tag.getLength() + "," + nextSymbol + ">  ");
                     }
                 }
             } catch (IOException e) {
@@ -48,7 +48,7 @@ public class LZ77 {
                     String[] tokens = line.split("  ");
                     for(int i = 0 ; i < tokens.length; i++){
                         String token = tokens[i].substring(1 , tokens[i].length() - 1);
-                        String[] Tag = token.split("/");
+                        String[] Tag = token.split(",", 3);
                         if(Tag[2].equals("\\n") ){
                             result.add(new LZ77Tag(Integer.parseInt(Tag[0]), Integer.parseInt(Tag[1]), '\n'));
                         }else{
