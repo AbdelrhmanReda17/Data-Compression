@@ -74,7 +74,7 @@ public class LZ77 {
             int position = 0;
             int maxLength = 0;
             char nextSymbol = data.charAt(maxLength + curr);
-            for (int i = 1; i <= WINDOW_SIZE && i <= curr; i++)
+            for (int i = 1; i <= WINDOW_SIZE && i <= curr ; i++)
             {
                 int length = 0;
                 while (curr + length < data.length() && length < BUFFER_SIZE && curr + length - i < curr + length
