@@ -72,9 +72,9 @@ public class Huffman {
         for (Map.Entry<Character, String> entry : huffmanTable.entrySet()) {
             overhead.append(entry.getKey());
             overhead.append(entry.getValue());
-            overhead.append('&');
+            overhead.append("&&");
         }
-        overhead.append('$');
+        overhead.append("$$");
         overhead.append('\n');
         StringBuilder encodedText = new StringBuilder();
         for (char ch : text.toCharArray()) {
@@ -93,10 +93,10 @@ public class Huffman {
     }
 
     public String decodeText(String text) {
-        String[] tokens = text.split("\\$");
+        String[] tokens = text.split("\\$\\$");
         String binary = tokens[1];
         //contains 1char and number
-        String[] row = tokens[0].split("&");
+        String[] row = tokens[0].split("&&");
         Map<String, Character> huffmanTable = new HashMap<>();
         for (String s : row) {
             char c = s.charAt(0);
