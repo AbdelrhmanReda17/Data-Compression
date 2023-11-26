@@ -53,8 +53,6 @@ public class Huffman {
 
 
     public void compress(String fileName1, String fileName2) throws IOException {
-        File input = new File(fileName1);
-        File output = new File(fileName2);
         String text = readFromFile(fileName1);
         String encodedText = encodeText(text);
         writeToBinaryFile(fileName2, encodedText);
@@ -83,8 +81,6 @@ public class Huffman {
     }
 
     public void decompress(String fileName1, String fileName2) throws IOException {
-        File input = new File(fileName1);
-        File output = new File(fileName2);
         String text = readFromBinaryFile(fileName1);
         String decodedText = decodeText(text);
         writeToFile(fileName2, decodedText);
@@ -132,7 +128,7 @@ public class Huffman {
 
     public String readFromBinaryFile(String fileName) throws IOException {
         StringBuilder sb = new StringBuilder();
-        try (FileInputStream fis = new FileInputStream("compressed.bin");
+        try (FileInputStream fis = new FileInputStream(fileName);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
             int b;
             while ((b = isr.read()) != -1) {
@@ -143,7 +139,7 @@ public class Huffman {
                 sb.append((char) b);
             }
         }
-        try (FileInputStream fis = new FileInputStream("compressed.bin")) {
+        try (FileInputStream fis = new FileInputStream(fileName)) {
             fis.skip(sb.length());
             int decimalValue;
             while ((decimalValue = fis.read()) != -1) {
@@ -222,33 +218,4 @@ public class Huffman {
         return table;
     }
 
-    public Map<String, Character> getDecodingHuffmanTable(Map<Character, Integer> freq) {
-        Map<String, Character> table = new HashMap<>();
-        // add to priority queue and make it min heap by implementing comparable
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
-            Node x = new Node(entry.getKey(), entry.getValue());
-            pq.add(x);
-        }
-        while (pq.size() > 1) {
-            // smallest in pQueue
-            Node right = pq.poll();
-            // 2nd smallest pQueue
-            Node left = pq.poll();
-            // make parent containing the difference in the frequency between left and right
-            // and add it to the queue
-            Node parent = new Node('\0', left.freq + right.freq);
-            parent.right = right;
-            parent.left = left;
-            pq.add(parent);
-        }
-        HuffmanTree tree = new HuffmanTree(pq.poll());
-
-        //assign code to each character
-        for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
-            char c = entry.getKey();
-            table.put(tree.getCode(tree.root, c, ""), c);
-        }
-        return table;
-    }
 }
