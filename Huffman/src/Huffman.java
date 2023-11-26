@@ -116,12 +116,10 @@ public class Huffman {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String text;
         StringBuilder sb = new StringBuilder();
-        int i = 0;
         while ((text = reader.readLine()) != null) {
             sb.append(text);
-            if (i > 0)
+            if (reader.ready())
                 sb.append("\n");
-            i++;
         }
         return sb.toString();
     }
