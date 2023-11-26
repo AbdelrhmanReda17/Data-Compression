@@ -57,7 +57,6 @@ public class Huffman {
         File output = new File(fileName2);
         String text = readFromFile(fileName1);
         String encodedText = encodeText(text);
-//        writeToFile(fileName2, encodedText);
         writeToBinaryFile(fileName2, encodedText);
 //        return; n5leha btreturn el string 3shan law 3yzha lel gui?
     }
@@ -70,7 +69,7 @@ public class Huffman {
 //      el overhead by5ls 3nd $
 //      char,frequency&char,frequency$
         StringBuilder overhead = new StringBuilder();
-        for (Map.Entry<Character, Integer> entry : frequency.entrySet()) {
+        for (Map.Entry<Character, String> entry : huffmanTable.entrySet()) {
             overhead.append(entry.getKey());
             overhead.append(entry.getValue());
             overhead.append('&');
@@ -87,7 +86,6 @@ public class Huffman {
     public void decompress(String fileName1, String fileName2) throws IOException {
         File input = new File(fileName1);
         File output = new File(fileName2);
-//        String text = readFromFile(fileName1);
         String text = readFromBinaryFile(fileName1);
         String decodedText = decodeText(text);
         writeToFile(fileName2, decodedText);
@@ -95,17 +93,15 @@ public class Huffman {
     }
 
     public String decodeText(String text) {
-        Map<Character, Integer> frequency = new HashMap<>();
         String[] tokens = text.split("\\$");
         String binary = tokens[1];
         //contains 1char and number
         String[] row = tokens[0].split("&");
+        Map<String, Character> huffmanTable = new HashMap<>();
         for (String s : row) {
             char c = s.charAt(0);
-            int freq = Integer.parseInt(s.substring(1));
-            frequency.put(c, freq);
+            huffmanTable.put(s.substring(1),s.charAt(0));
         }
-        Map<String, Character> huffmanTable = getDecodingHuffmanTable(frequency);
 
         StringBuilder sb = new StringBuilder();
         String code = "";
@@ -128,9 +124,6 @@ public class Huffman {
         int i = 0;
         while ((text = reader.readLine()) != null) {
             sb.append(text);
-//            if (i > 0)
-//                sb.append('\n');
-//            i++;
         }
         return sb.toString();
     }
@@ -143,23 +136,6 @@ public class Huffman {
             sb.append(line);
         }
         try (FileInputStream fis = new FileInputStream("compressed.bin")) {
-//            sb.append(reader.readLine());
-//            String line;
-//            while ((line = reader.readLine()) != null){
-//                for (char c : line.toCharArray()) {
-//                    System.out.println(c);
-//                    int characterCode = c; // Convert character to integer
-////                System.out.println(c + ": " + characterCode);
-//                    String binaryRepresentation = Integer.toBinaryString(characterCode);
-//                    System.out.println(binaryRepresentation);
-//
-//                    for (int i = binaryRepresentation.length(); i < 7; i++)
-//                        sb.append("0");
-//
-//                    sb.append(binaryRepresentation);
-//                }
-//            }
-//            sb.append(fis.readLine());
             fis.skip(sb.length() + 1);
             int decimalValue;
             while ((decimalValue = fis.read()) != -1) {
@@ -167,7 +143,6 @@ public class Huffman {
                 sb.append(binaryRepresentation.substring(1));
             }
         }
-//        System.out.println(sb);
         return sb.toString();
     }
 
