@@ -75,7 +75,6 @@ public class Huffman {
             overhead.append("&&");
         }
         overhead.append("$$");
-        overhead.append('\n');
         StringBuilder encodedText = new StringBuilder();
         for (char ch : text.toCharArray()) {
             encodedText.append(huffmanTable.get(ch));
@@ -124,6 +123,9 @@ public class Huffman {
         int i = 0;
         while ((text = reader.readLine()) != null) {
             sb.append(text);
+            if (i > 0)
+                sb.append("\n");
+            i++;
         }
         return sb.toString();
     }
@@ -131,12 +133,18 @@ public class Huffman {
     public String readFromBinaryFile(String fileName) throws IOException {
         StringBuilder sb = new StringBuilder();
         try (FileInputStream fis = new FileInputStream("compressed.bin");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8))) {
-            String line = reader.readLine();
-            sb.append(line);
+             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+            int b;
+            while ((b = isr.read()) != -1) {
+                if ((char) b == '$' && sb.charAt(sb.length() - 1) == '$') {
+                    sb.append((char) b);
+                    break;
+                }
+                sb.append((char) b);
+            }
         }
         try (FileInputStream fis = new FileInputStream("compressed.bin")) {
-            fis.skip(sb.length() + 1);
+            fis.skip(sb.length());
             int decimalValue;
             while ((decimalValue = fis.read()) != -1) {
                 String binaryRepresentation = Integer.toBinaryString(decimalValue);
@@ -153,9 +161,9 @@ public class Huffman {
     }
 
     public void writeToBinaryFile(String fileName, String text) throws IOException {
-        String tokens[] = text.split("\n");
+        String tokens[] = text.split("\\$\\$");
         String codedString = tokens[1];
-        tokens[0] = tokens[0] + "\n";
+        tokens[0] = tokens[0] + "$$";
         int i = 0;
         try (FileOutputStream fos = new FileOutputStream(fileName);
              DataOutputStream dos = new DataOutputStream(fos)) {
