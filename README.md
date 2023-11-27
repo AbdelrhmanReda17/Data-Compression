@@ -39,4 +39,4 @@ In addition to the core implementations of LZ77, LZW, and Huffman compression al
 
 ## Contributors
 This project is maintained by: [Abdelrhman Reda](https://github.com/AbdelrhmanReda17) , [Snowkaai](https://github.com/Snowkaai)
-Feel free to contribute, report issues, or provide feedback to enhance this Java Terminal tool.
+Feel free to contribute, report issues, or provide feedback 
