@@ -29,7 +29,6 @@ In addition to the core implementations of LZ77, LZW, and Huffman compression al
   - Open the project in IntelliJ IDEA or NetBeans.
   - Locate the main class (e.g., Main.java) for the GUI application.
   - Run the main class to launch the GUI application.
-  - 
 ## Usage
 1. Clone the repository to your local machine.
   ```
