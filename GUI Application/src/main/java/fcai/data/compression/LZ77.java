@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class LZ77 implements Compression<LZ77Tag>  {
+public class LZ77 implements Compression<Vector<LZ77Tag> , Vector<LZ77Tag>>  {
     private final int WINDOW_SIZE = 20000;
     private final int BUFFER_SIZE = 10000;
 

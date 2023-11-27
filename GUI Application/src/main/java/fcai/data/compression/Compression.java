@@ -12,9 +12,9 @@ import javax.swing.JFrame;
  * @author abdelrahman
  * @param <T>
  */
-public interface Compression<T> {
+public interface Compression<T , S> {
         public String compress(JFrame Main , String result);
         public String decompress(JFrame Main ,String data);
-        public Vector<T> compressHandler(String data);
-        public String decompressHandler (Vector <T> data);
+        public T compressHandler(String data);
+        public String decompressHandler (S data);
 }

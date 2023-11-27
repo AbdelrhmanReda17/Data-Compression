@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class LZW implements Compression<String> {
+public class LZW implements Compression<Vector<String> , Vector<String>> {
     @Override
     public String compress(JFrame Main , String result) {
         Pattern pattern = Pattern.compile("<.*>|[0-9 ]+");

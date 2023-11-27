@@ -24,6 +24,7 @@ public class DataCompression extends javax.swing.JFrame {
         jSaveButton.setVisible(false);
         jCompressionChoice.add("LZ77");
         jCompressionChoice.add("LZW");
+        jCompressionChoice.add("Standard Huffman");
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +46,6 @@ public class DataCompression extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(727, 510));
 
         jScrollPane.setToolTipText("");
         jScrollPane.setAutoscrolls(true);
@@ -65,7 +65,7 @@ public class DataCompression extends javax.swing.JFrame {
             jTextAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jTextAreaPanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE))
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE))
         );
         jTextAreaPanelLayout.setVerticalGroup(
             jTextAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,9 +94,10 @@ public class DataCompression extends javax.swing.JFrame {
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jButtonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jGenericButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jGenericButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                    .addComponent(jSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jButtonPanelLayout.setVerticalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +133,7 @@ public class DataCompression extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jCompressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDecompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                    .addComponent(jDecompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jCompressionChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -159,8 +160,8 @@ public class DataCompression extends javax.swing.JFrame {
             jSideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jSideMenuPanelLayout.createSequentialGroup()
                 .addComponent(jCompressPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                .addComponent(jButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(181, 181, 181)
+                .addComponent(jButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -185,6 +186,32 @@ public class DataCompression extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCompressButtonActionPerformed
+       if(selectedFile == null){
+            JOptionPane.showMessageDialog(this, "Please Select a File First ");
+            return;
+       }
+       String selectedItem = jCompressionChoice.getSelectedItem();
+       CP = createCompressionAlgorithm(selectedItem);
+       String CompressedData = CP.compress(this , jTextArea.getText());
+       if(CompressedData != null){
+            jTextArea.setText(CompressedData);
+       }
+    }//GEN-LAST:event_jCompressButtonActionPerformed
+
+    private void jDecompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDecompressButtonActionPerformed
+        if(selectedFile == null){
+            JOptionPane.showMessageDialog(this, "Please Select a File First " , "Info" , 2);
+            return;
+       }
+        String selectedItem = jCompressionChoice.getSelectedItem();
+        CP = createCompressionAlgorithm(selectedItem);
+        String DecompressedData = CP.decompress(this , jTextArea.getText());
+        if(DecompressedData != null){
+            jTextArea.setText(DecompressedData);
+        }
+    }//GEN-LAST:event_jDecompressButtonActionPerformed
 
     private void jGenericButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGenericButtonActionPerformed
         if(selectedFile != null){
@@ -213,41 +240,6 @@ public class DataCompression extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jGenericButtonActionPerformed
 
-    private void jCompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCompressButtonActionPerformed
-       if(selectedFile == null){
-            JOptionPane.showMessageDialog(this, "Please Select a File First ");
-            return;
-       }
-       String selectedItem = jCompressionChoice.getSelectedItem();
-       CP = createCompressionAlgorithm(selectedItem);
-       String CompressedData = CP.compress(this , jTextArea.getText());
-       if(CompressedData != null){
-            jTextArea.setText(CompressedData);
-       }
-    }//GEN-LAST:event_jCompressButtonActionPerformed
-
-    private void jDecompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDecompressButtonActionPerformed
-        if(selectedFile == null){
-            JOptionPane.showMessageDialog(this, "Please Select a File First " , "Info" , 2);
-            return;
-       }
-        String selectedItem = jCompressionChoice.getSelectedItem();
-        CP = createCompressionAlgorithm(selectedItem);
-        String DecompressedData = CP.decompress(this , jTextArea.getText());
-        if(DecompressedData != null){
-            jTextArea.setText(DecompressedData);
-        }
-    }//GEN-LAST:event_jDecompressButtonActionPerformed
-    
-    public Compression createCompressionAlgorithm(String algorithm) {
-        if ("LZ77".equals(algorithm)) {
-            return new LZ77();
-        }else if("LZW".equals(algorithm)) {
-            return new LZW();
-        }
-        return null;
-    }
-    
     private void jSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveButtonActionPerformed
         String data = jTextArea.getText();
         try (FileWriter writer = new FileWriter(selectedFile)) {
@@ -257,7 +249,19 @@ public class DataCompression extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error on save File :" + e.getMessage() , "Error" , 0);
         }
     }//GEN-LAST:event_jSaveButtonActionPerformed
-
+    
+    public Compression createCompressionAlgorithm(String algorithm) {
+        if ("LZ77".equals(algorithm)) {
+            return new LZ77();
+        }else if("LZW".equals(algorithm)) {
+            return new LZW();
+        }
+        else if("Standard Huffman".equals(algorithm)) {
+            return new Huffman();
+        }
+        return null;
+    }
+    
     private String ReadFile(String fileName){
      try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
