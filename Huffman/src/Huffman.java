@@ -72,11 +72,13 @@ public class Huffman {
             overhead.append(entry.getValue());
             overhead.append("&&");
         }
-        overhead.append("$$");
         StringBuilder encodedText = new StringBuilder();
         for (char ch : text.toCharArray()) {
             encodedText.append(huffmanTable.get(ch));
         }
+        int bytes = (encodedText.length() + 7) / 8; // how many bytes
+        int extraBits = encodedText.length() % 8; // extra bits paded for last byte
+        overhead.append("%%" + bytes + "%%" + extraBits + "%%$$");
         return overhead.toString() + encodedText.toString();
     }
 
@@ -91,11 +93,11 @@ public class Huffman {
         String[] tokens = text.split("\\$\\$");
         String binary = tokens[1];
         //contains 1char and number
-        String[] row = tokens[0].split("&&");
+        String[] info = tokens[0].split("%%");
+        String[] row = info[0].split("&&");
         Map<String, Character> huffmanTable = new HashMap<>();
         for (String s : row) {
-            char c = s.charAt(0);
-            huffmanTable.put(s.substring(1),s.charAt(0));
+            huffmanTable.put(s.substring(1), s.charAt(0));
         }
 
         StringBuilder sb = new StringBuilder();
@@ -137,12 +139,25 @@ public class Huffman {
                 sb.append((char) b);
             }
         }
+        String temp = sb.toString();
+        String tokens[] = temp.split("%%");
+        int bytes = Integer.parseInt(tokens[1]);
+        int extrabits = Integer.parseInt(tokens[2]);
+        int counter = 1;
         try (FileInputStream fis = new FileInputStream(fileName)) {
             fis.skip(sb.length());
             int decimalValue;
             while ((decimalValue = fis.read()) != -1) {
                 String binaryRepresentation = Integer.toBinaryString(decimalValue);
-                sb.append(binaryRepresentation.substring(1));
+                while (binaryRepresentation.length() < 8)
+                    binaryRepresentation = "0" + binaryRepresentation;
+
+                if (counter == bytes) {
+                    sb.append(binaryRepresentation.substring(8-extrabits));
+                } else {
+                    sb.append(binaryRepresentation);
+                }
+                counter++;
             }
         }
         return sb.toString();
@@ -163,12 +178,12 @@ public class Huffman {
              DataOutputStream dos = new DataOutputStream(fos)) {
             fos.write(tokens[0].getBytes(StandardCharsets.UTF_8));
             while (i < codedString.length()) {
-                String binary = "1";
-                i += 7;
+                String binary = "";
+                i += 8;
                 if (i >= codedString.length()) {
-                    binary = binary + codedString.substring(i - 7);
+                    binary = binary + codedString.substring(i - 8);
                 } else {
-                    binary = binary + codedString.substring(i - 7, i);
+                    binary = binary + codedString.substring(i - 8, i);
                 }
                 int decimalValue = Integer.parseInt(binary, 2);
                 byte b = (byte) decimalValue;
