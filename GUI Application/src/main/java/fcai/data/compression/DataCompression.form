@@ -116,7 +116,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <Component id="jCompressPanel" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
                   <Component id="jButtonPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -129,11 +129,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jGenericButton" alignment="0" pref="155" max="32767" attributes="0"/>
-                          <Component id="jSaveButton" max="32767" attributes="0"/>
+                          <Component id="jSaveButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jSaveBinaryButton" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -143,6 +144,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jSaveBinaryButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSaveButton" linkSize="6" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jGenericButton" linkSize="6" min="-2" max="-2" attributes="0"/>
@@ -168,6 +171,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGenericButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="jSaveBinaryButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save as Binary"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jCompressPanel">
@@ -179,8 +187,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jCompressButton" max="32767" attributes="0"/>
-                          <Component id="jDecompressButton" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jCompressionChoice" max="32767" attributes="0"/>
+                          <Component id="jDecompressButton" alignment="0" pref="147" max="32767" attributes="0"/>
+                          <Component id="jCompressionChoice" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -218,6 +226,9 @@
               </Events>
             </Component>
             <Component class="java.awt.Choice" name="jCompressionChoice">
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCompressionChoiceItemStateChanged"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

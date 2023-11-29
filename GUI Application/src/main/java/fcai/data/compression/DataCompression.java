@@ -11,22 +11,18 @@ import java.io.FileWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-
 public class DataCompression extends javax.swing.JFrame {
     private File selectedFile;
     
-    private Compression CP;
+    private Compression CP = new LZ77();
 
     public DataCompression() {
         initComponents();
-        selectedFile = null;
-        jGenericButton.setText("Browse");
-        jSaveButton.setVisible(false);
-        jCompressionChoice.add("LZ77");
-        jCompressionChoice.add("LZW");
-        jCompressionChoice.add("Standard Huffman");
+        this.jCompressionChoice.add("LZ77");
+        this.jCompressionChoice.add("LZW");
+        this.jCompressionChoice.add("Standard Huffman");
+        this.Reset();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -38,6 +34,7 @@ public class DataCompression extends javax.swing.JFrame {
         jButtonPanel = new javax.swing.JPanel();
         jSaveButton = new javax.swing.JButton();
         jGenericButton = new javax.swing.JButton();
+        jSaveBinaryButton = new javax.swing.JButton();
         jCompressPanel = new javax.swing.JPanel();
         jCompressButton = new javax.swing.JButton();
         jDecompressButton = new javax.swing.JButton();
@@ -88,21 +85,26 @@ public class DataCompression extends javax.swing.JFrame {
             }
         });
 
+        jSaveBinaryButton.setText("Save as Binary");
+
         javax.swing.GroupLayout jButtonPanelLayout = new javax.swing.GroupLayout(jButtonPanel);
         jButtonPanel.setLayout(jButtonPanelLayout);
         jButtonPanelLayout.setHorizontalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jButtonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jGenericButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                    .addComponent(jSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jGenericButton, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                    .addComponent(jSaveButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSaveBinaryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jButtonPanelLayout.setVerticalGroup(
             jButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jButtonPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSaveBinaryButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jGenericButton)
@@ -125,6 +127,12 @@ public class DataCompression extends javax.swing.JFrame {
             }
         });
 
+        jCompressionChoice.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCompressionChoiceItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jCompressPanelLayout = new javax.swing.GroupLayout(jCompressPanel);
         jCompressPanel.setLayout(jCompressPanelLayout);
         jCompressPanelLayout.setHorizontalGroup(
@@ -133,7 +141,7 @@ public class DataCompression extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jCompressPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDecompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDecompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                     .addComponent(jCompressionChoice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -160,7 +168,7 @@ public class DataCompression extends javax.swing.JFrame {
             jSideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jSideMenuPanelLayout.createSequentialGroup()
                 .addComponent(jCompressPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(181, 181, 181)
+                .addGap(154, 154, 154)
                 .addComponent(jButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -188,60 +196,54 @@ public class DataCompression extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCompressButtonActionPerformed
-       if(selectedFile == null){
-            JOptionPane.showMessageDialog(this, "Please Select a File First ");
-            return;
-       }
-       String selectedItem = jCompressionChoice.getSelectedItem();
-       CP = createCompressionAlgorithm(selectedItem);
        String CompressedData = CP.compress(this , jTextArea.getText());
        if(CompressedData != null){
-            jTextArea.setText(CompressedData);
+            this.jTextArea.setText(CompressedData);
        }
     }//GEN-LAST:event_jCompressButtonActionPerformed
 
     private void jDecompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDecompressButtonActionPerformed
-        if(selectedFile == null){
-            JOptionPane.showMessageDialog(this, "Please Select a File First " , "Info" , 2);
-            return;
-       }
-        String selectedItem = jCompressionChoice.getSelectedItem();
-        CP = createCompressionAlgorithm(selectedItem);
         String DecompressedData = CP.decompress(this , jTextArea.getText());
         if(DecompressedData != null){
-            jTextArea.setText(DecompressedData);
+            this.jTextArea.setText(DecompressedData);
         }
     }//GEN-LAST:event_jDecompressButtonActionPerformed
 
+    public final void Reset(){
+        selectedFile = null;
+        this.jGenericButton.setText("Browse");
+        this.jSaveButton.setVisible(false);
+        this.jSaveBinaryButton.setVisible(false);
+        this.jCompressButton.setEnabled(false);
+        this.jDecompressButton.setEnabled(false);
+        this.jCompressionChoice.setEnabled(false);
+        this.jTextArea.setText("");
+    }
+    public final void Start(){
+        this.jGenericButton.setText("Close");
+        this.jSaveButton.setVisible(true);
+        this.jCompressButton.setEnabled(true);
+        this.jDecompressButton.setEnabled(true);
+        this.jCompressionChoice.setEnabled(true);
+    }
     private void jGenericButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGenericButtonActionPerformed
         if(selectedFile != null){
-            selectedFile = null;
-            jGenericButton.setText("Browse");
-            jTextArea.setText("");
-            jSaveButton.setVisible(false);
+              Reset();
         }else{
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int returnValue = fileChooser.showOpenDialog(this);
-
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                jGenericButton.setText("Close");
-                jSaveButton.setVisible(true);
-
-                // Get the selected file
-                selectedFile = fileChooser.getSelectedFile();
-
-                // Now you can read the selected file and display its contents
+                this.Start();
+                this.selectedFile = fileChooser.getSelectedFile();
                 String fileContent = ReadFile(selectedFile.getAbsolutePath());
-
-                // Display the file content in the JTextArea
-                jTextArea.setText(fileContent);
+                this.jTextArea.setText(fileContent);
             }
         }
     }//GEN-LAST:event_jGenericButtonActionPerformed
 
     private void jSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveButtonActionPerformed
-        String data = jTextArea.getText();
+        String data = this.jTextArea.getText();
         try (FileWriter writer = new FileWriter(selectedFile)) {
             writer.write(data);
             JOptionPane.showMessageDialog(this, "File Saved Successfully" , "Success" , 1);
@@ -249,18 +251,10 @@ public class DataCompression extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error on save File :" + e.getMessage() , "Error" , 0);
         }
     }//GEN-LAST:event_jSaveButtonActionPerformed
-    
-    public Compression createCompressionAlgorithm(String algorithm) {
-        if ("LZ77".equals(algorithm)) {
-            return new LZ77();
-        }else if("LZW".equals(algorithm)) {
-            return new LZW();
-        }
-        else if("Standard Huffman".equals(algorithm)) {
-            return new Huffman();
-        }
-        return null;
-    }
+
+    private void jCompressionChoiceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCompressionChoiceItemStateChanged
+        this.CP = CompressionFactory.createCompression(evt.getItem().toString());
+    }//GEN-LAST:event_jCompressionChoiceItemStateChanged
     
     private String ReadFile(String fileName){
      try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -285,7 +279,6 @@ public class DataCompression extends javax.swing.JFrame {
             new DataCompression().setVisible(true);
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jButtonPanel;
     private javax.swing.JButton jCompressButton;
@@ -293,6 +286,7 @@ public class DataCompression extends javax.swing.JFrame {
     private java.awt.Choice jCompressionChoice;
     private javax.swing.JButton jDecompressButton;
     private javax.swing.JButton jGenericButton;
+    private javax.swing.JButton jSaveBinaryButton;
     private javax.swing.JButton jSaveButton;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JPanel jSideMenuPanel;

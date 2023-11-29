@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 
@@ -61,47 +62,56 @@ public class Huffman implements Compression<Map<Character,String> , Map<String,C
 
     @Override
     public String compress(JFrame Main, String result) {
-        Map<Character, String> huffmanTable = compressHandler(result);
-        StringBuilder overhead = new StringBuilder();
-        StringBuilder compressedResult = new StringBuilder();
-        for (Map.Entry<Character, String> entry : huffmanTable.entrySet()) {
-            overhead.append(entry.getKey());
-            overhead.append(entry.getValue());
-            overhead.append("&&");
-        }
-        StringBuilder encodedText = new StringBuilder();
-        for (char ch : result.toCharArray()) {
-            encodedText.append(huffmanTable.get(ch));
-        }
-        int bytes = (encodedText.length() + 7) / 8;
-        int extraBits = encodedText.length() % 8; 
-        overhead.append("%%" + bytes + "%%" + extraBits + "%%$$");
-        for (int i = 0; i < result.length(); i++) {
-            char currentChar = result.charAt(i);
-            String huffmanCode = huffmanTable.get(currentChar);
-
-            if (huffmanCode != null) {
-                compressedResult.append(huffmanCode);
-            } else {
-                System.out.println("Character not found in Huffman table: " + currentChar);
+        try{
+            Map<Character, String> huffmanTable = compressHandler(result);
+            StringBuilder overhead = new StringBuilder();
+            StringBuilder compressedResult = new StringBuilder();
+            for (Map.Entry<Character, String> entry : huffmanTable.entrySet()) {
+                overhead.append(entry.getKey());
+                overhead.append(entry.getValue());
+                overhead.append("&&");
             }
+            StringBuilder encodedText = new StringBuilder();
+            for (char ch : result.toCharArray()) {
+                encodedText.append(huffmanTable.get(ch));
+            }
+            int bytes = (encodedText.length() + 7) / 8;
+            int extraBits = encodedText.length() % 8; 
+            overhead.append("%%").append(bytes).append("%%").append(extraBits).append("%%$$");
+            for (int i = 0; i < result.length(); i++) {
+                char currentChar = result.charAt(i);
+                String huffmanCode = huffmanTable.get(currentChar);
+
+                if (huffmanCode != null) {
+                    compressedResult.append(huffmanCode);
+                } else {
+                    System.out.println("Character not found in Huffman table: " + currentChar);
+                }
+            }        
+            compressedResult.insert(0, overhead);
+            return compressedResult.toString();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(Main, "Cannot Compress the file " , "Error" , 0);
+            return null;
         }
-      
-        compressedResult.insert(0, overhead);
-        return compressedResult.toString();
     }
     @Override
     public String decompress(JFrame Main, String data) {
-        String[] tokens = data.split("\\$\\$");
-        this.binary = tokens[1];
-        //contains 1char and number
-        String[] info = tokens[0].split("%%");
-        String[] row = info[0].split("&&");
-        Map<String, Character> huffmanTable = new HashMap<>();
-        for (String s : row) {
-            huffmanTable.put(s.substring(1), s.charAt(0));
+        try{
+            String[] tokens = data.split("\\$\\$");
+            this.binary = tokens[1];
+            //contains 1char and number
+            String[] info = tokens[0].split("%%");
+            String[] row = info[0].split("&&");
+            Map<String, Character> huffmanTable = new HashMap<>();
+            for (String s : row) {
+                huffmanTable.put(s.substring(1), s.charAt(0));
+            }
+            return decompressHandler(huffmanTable);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(Main, "Cannot Decompress the file " , "Error" , 0);
+            return null;
         }
-        return decompressHandler(huffmanTable);
     }
 
     @Override

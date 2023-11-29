@@ -4,13 +4,13 @@
  */
 package fcai.data.compression;
 
-import java.util.Vector;
 import javax.swing.JFrame;
 
 /**
  *
  * @author abdelrahman
  * @param <T>
+ * @param <S>
  */
 public interface Compression<T , S> {
         public String compress(JFrame Main , String result);

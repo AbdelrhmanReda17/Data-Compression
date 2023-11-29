@@ -1,8 +1,7 @@
 package fcai.data.compression;
 
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -13,13 +12,6 @@ public class LZ77 implements Compression<Vector<LZ77Tag> , Vector<LZ77Tag>>  {
     @Override
     public String compress(JFrame Main , String result) {
         try{
-            Pattern pattern = Pattern.compile("<.*>|[0-9 ]+");
-            Matcher matcher = pattern.matcher(result);
-
-            if (matcher.find()) {
-                JOptionPane.showMessageDialog(Main, "Cannot Compress the file twice", "Error", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }
             Vector<LZ77Tag> data = compressHandler(result);
             String CompressedData = "";
             for (int i = 0; i < data.size(); i++) {
@@ -33,11 +25,10 @@ public class LZ77 implements Compression<Vector<LZ77Tag> , Vector<LZ77Tag>>  {
             }
             return CompressedData;
         }catch(Exception e){
-            JOptionPane.showMessageDialog(Main, "Cannot Compress the file : " + e.getMessage() , "Error" , 0);
+            JOptionPane.showMessageDialog(Main, "Cannot Compress the file " , "Error" , 0);
         }
        return null;
     }
-    
     @Override
     public String decompress(JFrame Main ,String data) {
             try{
@@ -53,10 +44,10 @@ public class LZ77 implements Compression<Vector<LZ77Tag> , Vector<LZ77Tag>>  {
                     }
                 } 
                 return decompressHandler(result);
-            }catch(Exception e){
+            }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(Main, "Cannot Decompress the file " , "Error" , 0);
+                return null;
             }
-        return null;
     }
     @Override
     public Vector<LZ77Tag> compressHandler(String data) {

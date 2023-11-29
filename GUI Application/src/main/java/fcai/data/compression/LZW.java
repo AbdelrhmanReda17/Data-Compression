@@ -1,21 +1,14 @@
 package fcai.data.compression;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class LZW implements Compression<Vector<String> , Vector<String>> {
     @Override
     public String compress(JFrame Main , String result) {
-        Pattern pattern = Pattern.compile("<.*>|[0-9 ]+");
-        Matcher matcher = pattern.matcher(result);
-        if (matcher.find()) {
-            JOptionPane.showMessageDialog(Main, "Cannot Compress the file twice", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
         try{
             Vector<String> data = compressHandler(result);
             String CompressedData = "";
@@ -33,13 +26,10 @@ public class LZW implements Compression<Vector<String> , Vector<String>> {
         try{
             Vector<String> result = new Vector<>();
             String[] tokens = data.split(" ");
-            for(var token : tokens) {
-                result.add(token);
-            }
-            String asd = decompressHandler(result);
-            return asd;
+            result.addAll(Arrays.asList(tokens));
+            return decompressHandler(result);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(Main, "Cannot Compress the file : " + e.getMessage() , "Error" , 0);
+            JOptionPane.showMessageDialog(Main, "Cannot Decompress the file : " + e.getMessage() , "Error" , 0);
         }
         return null;
     }
