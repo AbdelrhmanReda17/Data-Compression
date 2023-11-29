@@ -153,7 +153,7 @@ public class Huffman {
                     binaryRepresentation = "0" + binaryRepresentation;
 
                 if (counter == bytes) {
-                    sb.append(binaryRepresentation.substring(8-extrabits));
+                    sb.append(binaryRepresentation.substring(extrabits));
                 } else {
                     sb.append(binaryRepresentation);
                 }
