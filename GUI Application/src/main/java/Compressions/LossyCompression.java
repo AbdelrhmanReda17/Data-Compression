@@ -5,13 +5,14 @@
 
 package Compressions;
 
-import java.io.ByteArrayOutputStream;
+import Compressions.LossyCompressions.VectorQuantization.VectorQuantization;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -23,16 +24,47 @@ import javax.swing.filechooser.FileFilter;
  */
 public class LossyCompression extends javax.swing.JFrame {
 
-    byte[] OriginalPhoto;
-    byte[] CompressedPhoto;
+    int[][] Image;
+    BufferedImage compressedImage;
+    BufferedImage originalImage; 
     File selectedFile;
-    boolean isOriginal;
+    boolean isCompressedFile = false;
+    
     /** Creates new form LosslessCompression */
     public LossyCompression() {
         initComponents();
         this.setLocationRelativeTo(null);
+        Off();
     }
-
+    public final void Off(){
+        this.jCompressButton.setEnabled(false);
+        this.jDecompressButton.setEnabled(false);
+        this.jCodeblockSpinner.setEnabled(false);
+        this.jLabelSpinner.setEnabled(false);
+        this.jSaveButton.setEnabled(false);
+        selectedFile = null;
+        jImage.setIcon(null);
+        this.jOriginalButton.setEnabled(false);
+        this.jGenericButton.setText("Browse");
+        this.jFileName.setText("");
+    }
+    public final void NormalOpen(){
+        this.jCompressButton.setEnabled(true);
+        this.jDecompressButton.setEnabled(true);
+        this.jCodeblockSpinner.setEnabled(true);
+        this.jLabelSpinner.setEnabled(true);
+        this.jSaveButton.setEnabled(true);
+        this.jOriginalButton.setEnabled(true);
+        this.jGenericButton.setText("Close");
+        isCompressedFile = false;
+    }
+    public final void CompressedOpen(){
+        this.jDecompressButton.setEnabled(true);
+        this.jSaveButton.setEnabled(true);
+        this.jGenericButton.setEnabled(true);
+        isCompressedFile = true;
+        this.jGenericButton.setText("Close");
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -43,11 +75,24 @@ public class LossyCompression extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jCodeblockSpinner = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
+        jLabelSpinner = new javax.swing.JSpinner();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jCompressButton = new javax.swing.JButton();
+        jDecompressButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jSaveButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jReturnButton = new javax.swing.JButton();
+        jOriginalButton = new javax.swing.JButton();
         jImagePane = new javax.swing.JScrollPane();
         jImage = new javax.swing.JLabel();
-        jBrowseButton = new javax.swing.JButton();
+        jGenericButton = new javax.swing.JButton();
+        jFileName = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -57,36 +102,183 @@ public class LossyCompression extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Vector Quantization");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Label Size :");
+
+        jCodeblockSpinner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jCodeblockSpinner.setValue(1);
+        jCodeblockSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCodeblockSpinnerStateChanged(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Codeblock Size:");
+
+        jLabelSpinner.setName(""); // NOI18N
+        jLabelSpinner.setValue(1);
+        jLabelSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jLabelSpinnerStateChanged(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel4.setText("Note : ( Width = Height )");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCodeblockSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelSpinner))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCodeblockSpinner))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelSpinner))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jCompressButton.setText("Compress");
+        jCompressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCompressButtonActionPerformed(evt);
+            }
+        });
+
+        jDecompressButton.setText("Decompress");
+        jDecompressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDecompressButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDecompressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCompressButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDecompressButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jSaveButton.setText("Save");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jPanel3, jPanel5});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel1);
-
-        jReturnButton.setText("Compressed/Original");
-        jReturnButton.addActionListener(new java.awt.event.ActionListener() {
+        jOriginalButton.setText(" Compressed / Original Image");
+        jOriginalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jReturnButtonActionPerformed(evt);
+                jOriginalButtonActionPerformed(evt);
             }
         });
 
+        jImage.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                jImageComponentResized(evt);
+            }
+        });
         jImagePane.setViewportView(jImage);
 
-        jBrowseButton.setText("Browse");
-        jBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+        jGenericButton.setText("Browse/Close");
+        jGenericButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBrowseButtonActionPerformed(evt);
+                jGenericButtonActionPerformed(evt);
             }
         });
+
+        jFileName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jFileName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jFileName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -96,27 +288,43 @@ public class LossyCompression extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jImagePane, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jReturnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jBrowseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jFileName, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jGenericButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jOriginalButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jImagePane, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .addComponent(jImagePane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jReturnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jOriginalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jBrowseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jGenericButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jFileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel2);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -129,43 +337,98 @@ public class LossyCompression extends javax.swing.JFrame {
         DataCompression.StartGUI();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBrowseButtonActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.addChoosableFileFilter(new ImageFilter());
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        int option = fileChooser.showOpenDialog(this);
-        if(option == JFileChooser.APPROVE_OPTION){
-            selectedFile = fileChooser.getSelectedFile();
-            System.out.print(selectedFile);
-            jImage.setIcon(new ImageIcon(selectedFile.toString()));
-            try{
-                FileInputStream fis = new FileInputStream(selectedFile);
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                    for(int readNum; (readNum = fis.read(buf))!= -1;)
-                        bos.write(buf , 0 , readNum);
-                    isOriginal = true;
-                    OriginalPhoto = bos.toByteArray();
-                    CompressedPhoto = bos.toByteArray();
-            }catch(IOException e){
-                JOptionPane.showMessageDialog(this, "Error on upload Image " , "Error" , 0);
-            }
-        }    
-    }//GEN-LAST:event_jBrowseButtonActionPerformed
-
-    private void jReturnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReturnButtonActionPerformed
-        try (OutputStream os = new FileOutputStream(selectedFile)) {
-            if(isOriginal){
-                os.write(OriginalPhoto);
-            }else{
-                os.write(CompressedPhoto);
-            }
-           os.close();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error on change Image  " + e.getMessage() + "ASDASDASd" , "Error" , 0);
+    private void jGenericButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGenericButtonActionPerformed
+        if(selectedFile != null){
+            Off();
+            return;
         }
-        jImage.setIcon(new ImageIcon(selectedFile.toString()));
-    }//GEN-LAST:event_jReturnButtonActionPerformed
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter(new ImageFilter());
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            int option = fileChooser.showOpenDialog(this);
+            if(option == JFileChooser.APPROVE_OPTION){
+                this.selectedFile = fileChooser.getSelectedFile();
+                String path = selectedFile.getAbsolutePath();
+                this.jFileName.setText(path);
+                if(".vqc".equals(path.substring(path.lastIndexOf('.') , path.length()))){
+                    CompressedOpen();
+                }else{
+                    ImageIcon img = new ImageIcon(selectedFile.toString());
+                    originalImage = ImageIO.read(selectedFile);
+                    ImageScaling(img);
+                    Image = VectorQuantization.readImg(selectedFile);
+                    NormalOpen();
+                }
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Cannot Read the Image !" + e.getMessage() , "Error" , 0);
+            Off();
+        }    
+    }//GEN-LAST:event_jGenericButtonActionPerformed
+    public static boolean  isPressed = false;
+    private void jOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOriginalButtonActionPerformed
+          if(isPressed){
+            if(compressedImage == null) return;
+            ImageIcon img = new ImageIcon(compressedImage);
+            ImageScaling(img); 
+            isPressed = false;
+          }else{
+            if(originalImage == null) return;
+            ImageIcon img = new ImageIcon(originalImage);
+            ImageScaling(img); 
+            isPressed = true;
+          }
+    }//GEN-LAST:event_jOriginalButtonActionPerformed
+
+    private void jCodeblockSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCodeblockSpinnerStateChanged
+          if( Integer.parseInt( this.jCodeblockSpinner.getValue().toString())  <= 0){
+              JOptionPane.showMessageDialog(this, "Can't assign zero or  negative values !" , "Error" , 0);
+              jCodeblockSpinner.setValue(1);
+          }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCodeblockSpinnerStateChanged
+
+    private void jLabelSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jLabelSpinnerStateChanged
+          if( Integer.parseInt( this.jLabelSpinner.getValue().toString()) <= 0 ){
+              JOptionPane.showMessageDialog(this, "Can't assign zero or  negative values !" , "Error" , 0);
+              jLabelSpinner.setValue(1);
+          }
+    }//GEN-LAST:event_jLabelSpinnerStateChanged
+
+    private void jCompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCompressButtonActionPerformed
+        try {
+            int[][] Temp = Image;
+            VectorQuantization.compress(Integer.parseInt(this.jLabelSpinner.getValue().toString()) , Integer.parseInt(this.jCodeblockSpinner.getValue().toString()) , Temp , selectedFile.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, "Image Compressed Successfully " + selectedFile.getAbsolutePath().substring(0,  selectedFile.getAbsolutePath().lastIndexOf('.'))+".vqc" , "Success" , 1);
+        } catch (IOException ex) {
+            Logger.getLogger(LossyCompression.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jCompressButtonActionPerformed
+
+    private void jDecompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDecompressButtonActionPerformed
+        try {
+            if(isCompressedFile){
+                compressedImage = VectorQuantization.Decompress(selectedFile.getAbsoluteFile().toString());
+            }else{
+                compressedImage = VectorQuantization.Decompress(selectedFile.getAbsoluteFile().toString().substring(0, selectedFile.getAbsoluteFile().toString().lastIndexOf('.'))+".vqc");
+            }
+            ImageIcon img = new ImageIcon(compressedImage);
+            ImageScaling(img);
+        } catch (Exception ex) {
+            Logger.getLogger(LossyCompression.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jDecompressButtonActionPerformed
+    
+    private void ImageScaling(ImageIcon img){
+        Image image = img.getImage().getScaledInstance(this.jImage.getWidth(), this.jImage.getHeight() ,2);
+        this.jImage.setIcon(new ImageIcon(image));
+    }
+    private void jImageComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jImageComponentResized
+        ImageIcon img = (ImageIcon) this.jImage.getIcon();
+        if(img == null) return;
+        ImageScaling(img);
+    }//GEN-LAST:event_jImageComponentResized
     public static void StartGUI() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -197,12 +460,25 @@ public class LossyCompression extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBrowseButton;
+    private javax.swing.JSpinner jCodeblockSpinner;
+    private javax.swing.JButton jCompressButton;
+    private javax.swing.JButton jDecompressButton;
+    private javax.swing.JLabel jFileName;
+    private javax.swing.JButton jGenericButton;
     private javax.swing.JLabel jImage;
     private javax.swing.JScrollPane jImagePane;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JSpinner jLabelSpinner;
+    private javax.swing.JButton jOriginalButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JButton jReturnButton;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JButton jSaveButton;
     // End of variables declaration//GEN-END:variables
 }
 class ImageFilter extends FileFilter {
@@ -211,7 +487,8 @@ class ImageFilter extends FileFilter {
    public final static String TIFF = "tiff";
    public final static String TIF = "tif";
    public final static String PNG = "png";
-   
+   public final static String VQC = "vqc";
+
    @Override
    public boolean accept(File f) {
       if (f.isDirectory()) {
@@ -224,6 +501,7 @@ class ImageFilter extends FileFilter {
                   extension.equals(TIF) ||
                   extension.equals(JPEG) ||
                   extension.equals(JPG) ||
+                  extension.equals(VQC) ||
                   extension.equals(PNG);
       }
       return false;
@@ -231,7 +509,7 @@ class ImageFilter extends FileFilter {
 
    @Override
    public String getDescription() {
-      return "Image Only";
+      return "Image Or VQC File";
    }
 
    String getExtension(File f) {
