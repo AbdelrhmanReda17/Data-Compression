@@ -26,14 +26,14 @@ public class DataCompression extends javax.swing.JFrame {
         setLocation(new java.awt.Point(0, 0));
         setName("Main Frame"); // NOI18N
 
-        jLossyButton.setText("Losssy Compressions");
+        jLossyButton.setText("Lossy Compressions");
         jLossyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLossyButtonActionPerformed(evt);
             }
         });
 
-        jLosslessButton.setText("Losssless Compressions");
+        jLosslessButton.setText("Lossless Compressions");
         jLosslessButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLosslessButtonActionPerformed(evt);
