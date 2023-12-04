@@ -356,7 +356,7 @@ public class LossyCompression extends javax.swing.JFrame {
                 this.selectedFile = fileChooser.getSelectedFile();
                 String path = selectedFile.getAbsolutePath();
                 this.jFileName.setText(path);
-                if(".vqc".equals(path.substring(path.lastIndexOf('.') , path.length()))){
+                if(".bin".equals(path.substring(path.lastIndexOf('.') , path.length()))){
                     CompressedOpen();
                 }else{
                     ImageIcon img = new ImageIcon(selectedFile.toString());
@@ -443,7 +443,11 @@ public class LossyCompression extends javax.swing.JFrame {
     private void jSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveButtonActionPerformed
        try {
             String Extension = getFileExtension(selectedFile);
+            if("bin".equals(Extension)){
+                Extension = "png";
+            }
             File outputfile = new File(selectedFile.getAbsoluteFile().toString().substring(0, selectedFile.getAbsoluteFile().toString().lastIndexOf('.')) + "Compressed." + Extension);
+           
             ImageIO.write(compressedImage, Extension, outputfile);
             JOptionPane.showMessageDialog(this, "Image saved successfully" );
         } catch (IOException e) {
