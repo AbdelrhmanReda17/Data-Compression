@@ -21,5 +21,5 @@ this repository also includes a Graphical User Interface (GUI) application built
 3. Follow the instructions in the algorithm's README for usage details and examples.
 
 ## Contributors
-This project is maintained by: [Abdelrhman Reda](https://github.com/AbdelrhmanReda17) , [Snowkaai](https://github.com/Snowkaai)
+This project is maintained by: [Abdelrhman Reda](https://github.com/AbdelrhmanReda17) , [Snowkaai](https://github.com/Snowkaai) and [Nada Mohammed](https://github.com/nadaamohhamed)
 Feel free to contribute, report issues, or provide feedback 
