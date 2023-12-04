@@ -13,14 +13,13 @@ public class Data implements Serializable {
     private int[] scaledDimensions;
     private int labelSize;
     private int[] vectorsToQuantizedIndices;
-    private Vector<int[][]> quantized;
+    private Vector<int[][][]> quantized;
     
     // Static deserialization method
     public static Data deserialize(String filePath) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(filePath))) {
             return (Data) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -28,7 +27,6 @@ public class Data implements Serializable {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
             objectOutputStream.writeObject(this);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -64,13 +62,11 @@ public class Data implements Serializable {
         this.vectorsToQuantizedIndices = vectorsToQuantizedIndices;
     }
 
-    public Vector<int[][]> getQuantized() {
+    public Vector<int[][][]> getQuantized() {
         return quantized;
     }
 
-    public void setQuantized(Vector<int[][]> quantized) {
+    public void setQuantized(Vector<int[][][]> quantized) {
         this.quantized = quantized;
     }
-
-
 }

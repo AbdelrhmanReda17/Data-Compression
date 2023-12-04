@@ -18,6 +18,7 @@ Compressions\DataCompression$1.class
 Compressions\LosslessCompressions\StandardHuffman\HuffmanNode.class
 Compressions\LosslessCompressions\LZ77\LZ77Tag.class
 Compressions\LosslessCompression$1.class
+Compressions\LossyCompression$9.class
 Compressions\ImageFilter.class
 Compressions\LossyCompressions\VectorQuantization\Data.class
 Compressions\LossyCompression$4.class

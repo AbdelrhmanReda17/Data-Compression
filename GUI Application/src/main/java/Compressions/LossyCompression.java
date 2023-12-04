@@ -24,7 +24,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public class LossyCompression extends javax.swing.JFrame {
 
-    int[][] Image;
+    int[][][] Image;
     BufferedImage compressedImage;
     BufferedImage originalImage; 
     File selectedFile;
@@ -203,6 +203,11 @@ public class LossyCompression extends javax.swing.JFrame {
         );
 
         jSaveButton.setText("Save");
+        jSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSaveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -398,9 +403,9 @@ public class LossyCompression extends javax.swing.JFrame {
 
     private void jCompressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCompressButtonActionPerformed
         try {
-            int[][] Temp = Image;
+            int[][][] Temp = Image;
             VectorQuantization.compress(Integer.parseInt(this.jLabelSpinner.getValue().toString()) , Integer.parseInt(this.jCodeblockSpinner.getValue().toString()) , Temp , selectedFile.getAbsolutePath());
-            JOptionPane.showMessageDialog(this, "Image Compressed Successfully " + selectedFile.getAbsolutePath().substring(0,  selectedFile.getAbsolutePath().lastIndexOf('.'))+".vqc" , "Success" , 1);
+            JOptionPane.showMessageDialog(this, "Image Compressed Successfully " + selectedFile.getAbsolutePath().substring(0,  selectedFile.getAbsolutePath().lastIndexOf('.'))+".bin" , "Success" , 1);
         } catch (IOException ex) {
             Logger.getLogger(LossyCompression.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -411,7 +416,7 @@ public class LossyCompression extends javax.swing.JFrame {
             if(isCompressedFile){
                 compressedImage = VectorQuantization.Decompress(selectedFile.getAbsoluteFile().toString());
             }else{
-                compressedImage = VectorQuantization.Decompress(selectedFile.getAbsoluteFile().toString().substring(0, selectedFile.getAbsoluteFile().toString().lastIndexOf('.'))+".vqc");
+                compressedImage = VectorQuantization.Decompress(selectedFile.getAbsoluteFile().toString().substring(0, selectedFile.getAbsoluteFile().toString().lastIndexOf('.'))+".bin");
             }
             ImageIcon img = new ImageIcon(compressedImage);
             ImageScaling(img);
@@ -429,6 +434,22 @@ public class LossyCompression extends javax.swing.JFrame {
         if(img == null) return;
         ImageScaling(img);
     }//GEN-LAST:event_jImageComponentResized
+    private static String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1).toLowerCase();
+    }
+    
+    private void jSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveButtonActionPerformed
+       try {
+            String Extension = getFileExtension(selectedFile);
+            File outputfile = new File(selectedFile.getAbsoluteFile().toString().substring(0, selectedFile.getAbsoluteFile().toString().lastIndexOf('.')) + "Compressed." + Extension);
+            ImageIO.write(compressedImage, Extension, outputfile);
+            JOptionPane.showMessageDialog(this, "Image saved successfully" );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jSaveButtonActionPerformed
     public static void StartGUI() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -487,7 +508,7 @@ class ImageFilter extends FileFilter {
    public final static String TIFF = "tiff";
    public final static String TIF = "tif";
    public final static String PNG = "png";
-   public final static String VQC = "vqc";
+   public final static String BIN = "bin";
 
    @Override
    public boolean accept(File f) {
@@ -501,7 +522,7 @@ class ImageFilter extends FileFilter {
                   extension.equals(TIF) ||
                   extension.equals(JPEG) ||
                   extension.equals(JPG) ||
-                  extension.equals(VQC) ||
+                  extension.equals(BIN) ||
                   extension.equals(PNG);
       }
       return false;
@@ -509,7 +530,7 @@ class ImageFilter extends FileFilter {
 
    @Override
    public String getDescription() {
-      return "Image Or VQC File";
+      return "Image Or BIN File";
    }
 
    String getExtension(File f) {
