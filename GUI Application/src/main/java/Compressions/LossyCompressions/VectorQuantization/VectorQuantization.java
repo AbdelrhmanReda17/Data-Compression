@@ -1,16 +1,20 @@
 package Compressions.LossyCompressions.VectorQuantization;
 
+import Compressions.LossyCompressions.Compression;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Vector;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
-public class VectorQuantization  {
-    public static int[] originalDimensions;  // {Height , Width}
-    public static int[] scaledDimensions; // {Height , Width}
-    public static int[][][] compress(int labelSize, int codeblockSize, int[][][] image , String path) throws IOException {
+public class VectorQuantization extends Compression<int[][][]>  {
+    public int[] originalDimensions;  // {Height , Width}
+    public int[] scaledDimensions; // {Height , Width}
+    
+    @Override
+    public void compress(int[][][] image , String path) {
         // vector<int[][]> 
         scaledDimensions = createScaledDimensions(labelSize);
         
@@ -40,18 +44,17 @@ public class VectorQuantization  {
         makeQuantized(vectors, quantized ,codeblockSize);
         int[] VectorsToQuantizedIndices = encodeImage(vectors , quantized);
         //Write To Compressed File
-        Data data = new Data() {};
+        Data data = new Data();
         data.setOriginalDimensions(originalDimensions);
         data.setScaledDimensions(scaledDimensions);
         data.setLabelSize(labelSize);
         data.setVectorsToQuantizedIndices(VectorsToQuantizedIndices);
         data.setQuantized(quantized);
         data.serialize(path.substring(0, path.lastIndexOf('.'))+".bin");
-
-        return scaledImage;
     }
-    public static BufferedImage Decompress(String path) throws IOException, ClassNotFoundException, Exception {
-            Data readData = Data.deserialize(path);
+    @Override
+    public  BufferedImage decompress(JFrame f , String path) throws IOException, ClassNotFoundException, Exception {
+            Data readData = Data.deserialize(f , path);
             if(readData == null) return null;
             originalDimensions = readData.getOriginalDimensions();
             scaledDimensions = readData.getScaledDimensions();
@@ -77,8 +80,8 @@ public class VectorQuantization  {
             return writeImg(newImg);       
     }
 
-   
-    public static int[] encodeImage(Vector<int[][][]> blocks, Vector<int[][][]> quantized) {
+  
+    public int[] encodeImage(Vector<int[][][]> blocks, Vector<int[][][]> quantized) {
         int[] indices = new int[blocks.size()];
         int j = 0;
         Vector<Integer> sums = new Vector<>();
@@ -102,7 +105,7 @@ public class VectorQuantization  {
         return indices;
     }
  
-    private static int[][][] getAverageVector(Vector<int[][][]> vectors) {
+    private int[][][] getAverageVector(Vector<int[][][]> vectors) {
       int height = vectors.get(0).length;
       int width = vectors.get(0)[0].length;
 
@@ -129,8 +132,7 @@ public class VectorQuantization  {
 
       return returnVector;
     }
-    
-    private static int euclideanDistance(int[][][] x, int[][][] y) {
+    private  int euclideanDistance(int[][][] x, int[][][] y) {
         int distance = 0;
         for (int i = 0; i < x.length; i++) {
             for (int j = 0; j < x[i].length; j++) {
@@ -141,8 +143,8 @@ public class VectorQuantization  {
         }
         return (int) Math.sqrt(distance);
     }
-        
-    private static void makeQuantized(Vector<int[][][]> blocks, Vector<int[][][]> quantized ,int bits ){
+    
+    private void makeQuantized(Vector<int[][][]> blocks, Vector<int[][][]> quantized ,int bits ){
         if (bits == 1 || blocks.isEmpty()) {
             if (!blocks.isEmpty())
                 quantized.add(getAverageVector(blocks));
@@ -177,13 +179,13 @@ public class VectorQuantization  {
         makeQuantized(right, quantized, bits / 2);
     }
 
-    private static int[] createScaledDimensions(int labelSize) {
+    private int[] createScaledDimensions(int labelSize) {
         int scaledHeight = originalDimensions[0] % labelSize == 0 ? originalDimensions[0] : ((originalDimensions[0] / labelSize) + 1) * labelSize;
         int scaledWidth = originalDimensions[1] % labelSize == 0 ? originalDimensions[1] : ((originalDimensions[1] / labelSize) + 1) * labelSize;
         return new int[]{scaledHeight, scaledWidth};
     }
-    
-    public static int[][][] readImg (File selectedFile) throws Exception {
+    @Override
+    public int[][][] readImg (File selectedFile) throws Exception {
         try{
             BufferedImage img = ImageIO.read(selectedFile);
             originalDimensions = new int[]{img.getHeight(), img.getWidth()};
@@ -206,8 +208,8 @@ public class VectorQuantization  {
            throw new Exception("Exception message");
         }
     }
-    
-    public static BufferedImage writeImg(int[][][] img) throws Exception {
+    @Override
+    public BufferedImage writeImg(int[][][] img) throws Exception {
         try{
             int width = img[0].length;
             int height = img.length;
@@ -228,6 +230,5 @@ public class VectorQuantization  {
            throw new Exception("Exception message");
         }
     }
-
 
 }

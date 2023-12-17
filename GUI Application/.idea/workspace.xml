@@ -5,39 +5,95 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d39cc42-61a3-4e92-8bf4-6ce3748ef2d1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Compressions/Utilities/ImageFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompression.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompression.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompressions/CompressionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LosslessCompressions/CompressionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompression.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompression.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompressions/VectorQuantization/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompressions/VectorQuantization/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompressions/VectorQuantization/VectorQuantization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Compressions/LossyCompressions/VectorQuantization/VectorQuantization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/DataCompression.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/DataCompression.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/ImageFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/ImageFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/ImageFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompression.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompressions/CompressionFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LosslessCompressions/CompressionFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompression.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompressions/VectorQuantization/Data.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompressions/VectorQuantization/Data.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompressions/VectorQuantization/VectorQuantization$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Compressions/LossyCompressions/VectorQuantization/VectorQuantization.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Compressions/LossyCompressions/VectorQuantization/VectorQuantization.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2Z5cJHOHxnPvmECwKXynWhAN8Hf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/abdelrahman/Downloads/Compressed/2D_Predictive_Coding_-_bw_-_final/_2D_Predictive Coding - bw - final&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="Compressions.Utilities" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="RUN" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Compressions.DataCompression" />
+      <module name="Data-Compression" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -47,10 +103,29 @@
       <option name="presentableId" value="Default" />
       <updated>1701715323002</updated>
       <workItem from="1701715343428" duration="39000" />
+      <workItem from="1701728153320" duration="74000" />
+      <workItem from="1701998166146" duration="3000" />
+      <workItem from="1702248865309" duration="8000" />
+      <workItem from="1702755951977" duration="354000" />
+      <workItem from="1702769208913" duration="4266000" />
+      <workItem from="1702775955977" duration="9551000" />
+      <workItem from="1702810829156" duration="5000" />
+      <workItem from="1702812129513" duration="328000" />
+      <workItem from="1702814578306" duration="1415000" />
+      <workItem from="1702842218822" duration="5583000" />
+      <workItem from="1702854203547" duration="1543000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="difference" />
+        <watch expression="difference[0].length" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

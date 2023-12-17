@@ -1,5 +1,6 @@
 package Compressions.LossyCompressions.VectorQuantization;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,10 +17,11 @@ public class Data implements Serializable {
     private Vector<int[][][]> quantized;
     
     // Static deserialization method
-    public static Data deserialize(String filePath) {
+    public static Data deserialize(JFrame f , String filePath) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(filePath))) {
             return (Data) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(f, "Error in deserialization of file ");
             return null;
         }
     }

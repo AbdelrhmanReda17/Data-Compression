@@ -4,6 +4,7 @@
  */
 package Compressions.LosslessCompressions;
 
+import Compressions.LosslessCompressions.Compression;
 import Compressions.LosslessCompressions.LZ77.LZ77;
 import Compressions.LosslessCompressions.LZW.LZW;
 import Compressions.LosslessCompressions.StandardHuffman.Huffman;
